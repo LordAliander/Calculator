@@ -3,6 +3,9 @@
 
 // -> have to add invalid input checks
 // -> have to patch some bugs
+// -> have to add Pi and e as viable input constants
+// -> check for negative sqrt and 0 division 
+// -> cannot yet handle tan(tan(40)) or tan(3*2) or similar
 
 void getLine(char s[]) {
     int i;
@@ -73,18 +76,18 @@ void createArray(char s[], Array *arr) {
                 arr[k].type = isOp;
                 arr[k].val.cVal = c;
                 k++;
-            } else if (c == 't' || c == 's' || c == 'c' || c == 'r') {
-                switch (c) {
-                    case 'c':
+            } else if (c == 't' || c == 's' || c == 'c') {
+                switch (s[++i]) {
+                    case 'o':
                         f = cos;
                         break;
-                    case 's':
+                    case 'i':
                         f = sin;
                         break;
-                    case 't':
+                    case 'a':
                         f = tan;
                         break;
-                    case 'r':
+                    case 'q':
                         f = sqrt;
                         break;
                     default:
