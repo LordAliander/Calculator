@@ -8,14 +8,14 @@ all:
 	@$(COMPILER) -c $(LIB).c -o $(BUILDDIR)/$(LIB).o
 	@$(COMPILER) $(FILENAME).c $(BUILDDIR)/$(LIB).o -o $(BUILDDIR)/$(FILENAME).out
 	@echo $(MESSAGE)
-	@./$(FILENAME).out
+	@./$(BUILDDIR)/$(FILENAME).out
 	@echo "\n"
-	make clean
+	@echo "Cleaning build directory..."
+	@make clean
 	
 clean:
-	rm *.out
-	rm *.o
-	rm $(BUILDDIR)/*.out
-	rm $(BUILDDIR)/*.o
+	@rm $(BUILDDIR)/*.out
+	@rm $(BUILDDIR)/*.o
+	@echo "done"
 
 

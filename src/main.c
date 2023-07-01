@@ -1,6 +1,8 @@
 #include "main.h"
 #include "stack.h"
 
+// -> have to add invalid input checks
+// -> have to patch some bugs
 
 void getLine(char s[]) {
     int i;
@@ -16,6 +18,7 @@ int isOperator(char c) {
         case '/':
         case '-':
         case '*':
+        case '^':
             return 1;
         default:
             return 0;
@@ -23,17 +26,17 @@ int isOperator(char c) {
 }
 
 float evalFunc(int n, float number) {
-    float i = 1; 
+    float i = 1;
     if (!au) i = PI / 180;
     switch (n) {
         case 0:
-            return (float) sin(i * number);
+            return (float)sin(i * number);
         case 1:
-            return (float) cos(i * number);
-        case 2: 
-            return (float) tan(i * number);
+            return (float)cos(i * number);
+        case 2:
+            return (float)tan(i * number);
         case 3:
-            return (float) sqrt(number);
+            return (float)sqrt(number);
         default:
             return 1.;
     }
@@ -44,7 +47,7 @@ void createArray(char s[], Array *arr) {
     int i, j, k = 0;
     int x;
     char temp[MAXLEN];  // Temporary string to store a number
-    enum func {sin, cos, tan, sqrt};
+    enum func { sin, cos, tan, sqrt };
     enum func f;
     for (i = 0; (c = s[i]) != '\0'; i++) {  // <--- increment 'i' here
         if (c == ' ' || c == '\t' || c == '\n') {
@@ -87,7 +90,8 @@ void createArray(char s[], Array *arr) {
                     default:
                         break;
                 }
-                for (; s[i] != '('; ++i);
+                for (; s[i] != '('; ++i)
+                    ;
                 ++i;
                 for (x = 0; isdigit(s[i]) || s[i] == '.'; ++i, ++x) {
                     temp[x] = s[i];
@@ -96,7 +100,7 @@ void createArray(char s[], Array *arr) {
                 if (atoi(temp) == 90 && f == 2)
                     fprintf(stderr, "tan(90) is undefined\n");
                 arr[k].type = isFloat;
-                arr[k].val.fVal = evalFunc(f, (float) atof(temp));
+                arr[k].val.fVal = evalFunc(f, (float)atof(temp));
                 k++;
                 i--;
             } else if (c == '(') {
@@ -107,7 +111,7 @@ void createArray(char s[], Array *arr) {
                 arr[k].type = isRightPar;
                 arr[k].val.cVal = c;
                 k++;
-            } 
+            }
         }
     }
     arr[k].type = isEnd;
@@ -123,6 +127,8 @@ float performOperation(char op, float a, float b) {
             return a * b;
         case '/':
             return b / a;
+        case '^':
+            return (float) pow(b, a);
         default:
             return 1.;
     }
@@ -136,6 +142,8 @@ int getPrecedence(char op) {
         case '*':
         case '/':
             return 2;
+        case '^':
+            return 3;
 
         default:
             return -1;  // for unknown operators

@@ -12,13 +12,10 @@
 #define PI 3.14159265358979323846264338327950288419716939937
 #define UI "\
 UNSCIENTIFIC CALCULATOR: \n\
-* not yet supported: ^\n\
 * to quit press: q\n\n"
 
 
 enum angleUnit {degrees, radians} au;
-
-
 
 typedef struct {
     enum { isFloat, isOp, isLeftPar, isRightPar, isEnd } type;
@@ -27,7 +24,6 @@ typedef struct {
         char cVal;
     } val;
 } Array;
-
 
 
 void getLine(char s[]);
