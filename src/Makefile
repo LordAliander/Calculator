@@ -17,5 +17,3 @@ clean:
 	@rm $(BUILDDIR)/*.out
 	@rm $(BUILDDIR)/*.o
 	@echo "done"
-
-
