@@ -55,7 +55,6 @@ void createArray(char s[], Array *arr) {
         }
         if (isdigit(c) || c == '.' || c == 'e' || c == 'E' ||
             (i > 0 && c == '-' && (s[i - 1] == 'e' || s[i - 1] == 'E'))) {
-                puts("here ");
             // If character is part of a float, capture the entire number
             for (j = 0;
                  isdigit(s[i]) || s[i] == '.' || s[i] == 'e' || s[i] == 'E' ||
@@ -75,7 +74,6 @@ void createArray(char s[], Array *arr) {
                 arr[k].val.cVal = c;
                 k++;
             } else if (c == 't' || c == 's' || c == 'c' || c == 'r') {
-                puts("ereh ");
                 switch (c) {
                     case 'c':
                         f = cos;
