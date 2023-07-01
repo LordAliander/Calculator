@@ -1,9 +1,11 @@
 COMPILER = clang
 MESSAGE = "PROGRAM: \n"
-FILENAME = main_calculator
+FILENAME = main
+LIB = stack
 
 all:
-	@$(COMPILER) $(FILENAME).c -o $(FILENAME).out; 
+	@$(COMPILER) -c $(LIB).c -o $(LIB).o
+	@$(COMPILER) $(FILENAME).c $(LIB).o -o $(FILENAME).out
 	@echo $(MESSAGE)
 	@./$(FILENAME).out
 	@echo "\n"
@@ -11,4 +13,5 @@ all:
 	
 clean:
 	rm *.out
+	rm *.o
 

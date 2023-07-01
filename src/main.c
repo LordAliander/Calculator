@@ -1,68 +1,6 @@
-#include <ctype.h>
-#include <stddef.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
+#include "main.h"
+#include "stack.h"
 
-#define MAXLEN 100
-#define PI 3.14159265358979323846264338327950288419716939937
-
-char ui[] = "\
-UNSCIENTIFIC CALCULATOR: \n\
-* not yet supported: ^\n\
-* to quit press: q\n\n";
-
-enum angleUnit {degrees, radians} au;
-
-typedef struct {
-    void *elems[MAXLEN];
-    int top;
-    size_t elemSize;
-    void (*freeFn)(void *);
-} Stack;
-
-void StackNew(Stack *s, size_t elemSize, void (*freeFn)(void *)) {
-    s->top = -1;
-    s->elemSize = elemSize;
-    s->freeFn = freeFn;
-}
-
-int StackEmpty(Stack *s) { return s->top == -1; }
-
-void StackPush(Stack *s, void *elemAddr) {
-    if (s->top >= MAXLEN - 1) {
-        fprintf(stderr, "Stack overflow\n");
-        return;
-    }
-    s->top++;
-    s->elems[s->top] = malloc(s->elemSize);
-    memcpy(s->elems[s->top], elemAddr, s->elemSize);
-}
-
-void StackPop(Stack *s, void *elemAddr) {
-    if (StackEmpty(s)) {
-        fprintf(stderr, "Stack underflow\n");
-        return;
-    }
-    memcpy(elemAddr, s->elems[s->top], s->elemSize);
-    if (s->freeFn != NULL) {
-        s->freeFn(s->elems[s->top]);
-    }
-    free(s->elems[s->top]);
-    s->top--;
-}
-
-void freeChar() {}
-void freeFloat() {}
-
-typedef struct {
-    enum { isFloat, isOp, isLeftPar, isRightPar, isEnd } type;
-    union {
-        float fVal;
-        char cVal;
-    } val;
-} Array;
 
 void getLine(char s[]) {
     int i;
@@ -175,8 +113,8 @@ void createArray(char s[], Array *arr) {
     arr[k].type = isEnd;
 }
 
-float performOperation(char operator, float a, float b) {
-    switch (operator) {
+float performOperation(char op, float a, float b) {
+    switch (op) {
         case '+':
             return a + b;
         case '-':
@@ -190,8 +128,8 @@ float performOperation(char operator, float a, float b) {
     }
 }
 
-int getPrecedence(char operator) {
-    switch (operator) {
+int getPrecedence(char op) {
+    switch (op) {
         case '+':
         case '-':
             return 1;
@@ -293,7 +231,7 @@ int main() {
     Array reversePolish[MAXLEN];
     char s[MAXLEN];
     char s1[MAXLEN];
-    printf("%s", ui);
+    printf(UI);
     printf("* select angle unit (r/d): \n -> ");
     getLine(s1);
     au = (s1[0] == 'd') ? degrees : radians;
