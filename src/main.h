@@ -12,7 +12,8 @@
 #define PI 3.14159265358979323846264338327950288419716939937
 #define UI "\
 UNSCIENTIFIC CALCULATOR: \n\
-* to quit press: q\n\n"
+* to quit press: q\n\
+* log2 -> lb; log10 -> lg;\n"
 
 
 enum angleUnit {degrees, radians} au;
@@ -27,6 +28,7 @@ typedef struct {
 
 
 void getLine(char s[]);
+int checkValidityOfExpression(char s[]);
 float evalFunc(int n, float number);
 int isOperator(char c);
 void createArray(char s[], Array *arr);

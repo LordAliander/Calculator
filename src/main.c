@@ -6,6 +6,7 @@
 // -> have to add Pi and e as viable input constants
 // -> check for negative sqrt and 0 division 
 // -> cannot yet handle tan(tan(40)) or tan(3*2) or similar
+// -> have to add checks to senure valid input
 
 void getLine(char s[]) {
     int i;
@@ -40,6 +41,12 @@ float evalFunc(int n, float number) {
             return (float)tan(i * number);
         case 3:
             return (float)sqrt(number);
+        case 4:
+            return (float)log(number);
+        case 5:
+            return (float)log10(number);
+        case 6: 
+            return (float)logb(number);
         default:
             return 1.;
     }
@@ -50,7 +57,7 @@ void createArray(char s[], Array *arr) {
     int i, j, k = 0;
     int x;
     char temp[MAXLEN];  // Temporary string to store a number
-    enum func { sin, cos, tan, sqrt };
+    enum func { sin, cos, tan, sqrt, ln, lg, lb };
     enum func f;
     for (i = 0; (c = s[i]) != '\0'; i++) {  // <--- increment 'i' here
         if (c == ' ' || c == '\t' || c == '\n') {
@@ -76,7 +83,7 @@ void createArray(char s[], Array *arr) {
                 arr[k].type = isOp;
                 arr[k].val.cVal = c;
                 k++;
-            } else if (c == 't' || c == 's' || c == 'c') {
+            } else if (c == 't' || c == 's' || c == 'c' || c == 'l') {
                 switch (s[++i]) {
                     case 'o':
                         f = cos;
@@ -89,6 +96,15 @@ void createArray(char s[], Array *arr) {
                         break;
                     case 'q':
                         f = sqrt;
+                        break;
+                    case 'g':
+                        f = lg;
+                        break;
+                    case 'n':
+                        f = ln;
+                        break;
+                    case 'b':
+                        f = lb;
                         break;
                     default:
                         break;
@@ -117,6 +133,13 @@ void createArray(char s[], Array *arr) {
         }
     }
     arr[k].type = isEnd;
+}
+
+int checkValidityOfExpression(char s[]) {
+    // operator to operand balance 
+    // brackets balance
+    // check for division by zero
+    // undefined functions -> tan(90) or sqrt(n<0)
 }
 
 float performOperation(char op, float a, float b) {
@@ -249,6 +272,7 @@ int main() {
         printf("\nInput expression: ");
         getLine(s);
         if (s[0] == 'q') return 0;
+        checkValidityOfExpression(s);
         createArray(s, infixNotation);
         convertToPostfix(infixNotation, reversePolish);
         float result = 0.;
@@ -257,3 +281,4 @@ int main() {
     }
     return 0;
 }
+
