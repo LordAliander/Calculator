@@ -8,6 +8,8 @@
 #include <string.h>
 #include <math.h>
 
+#define TESTPHASE 1
+
 #define MAXLEN 100
 #define PI 3.14159265358979323846264338327950288419716939937
 #define UI "\
@@ -28,7 +30,6 @@ typedef struct {
 
 
 void getLine(char s[]);
-int checkValidityOfExpression(char s[]);
 float evalFunc(int n, float number);
 int isOperator(char c);
 void createArray(char s[], Array *arr);

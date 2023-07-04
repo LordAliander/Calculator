@@ -12,7 +12,7 @@ int StackEmpty(Stack *s) { return s->top == -1; }
 
 void StackPush(Stack *s, void *elemAddr) {
     if (s->top >= MAXLEN - 1) {
-        fprintf(stderr, "Stack overflow\n");
+        //fprintf(stderr, "Stack overflow\n");
         return;
     }
     s->top++;
@@ -22,7 +22,7 @@ void StackPush(Stack *s, void *elemAddr) {
 
 void StackPop(Stack *s, void *elemAddr) {
     if (StackEmpty(s)) {
-        fprintf(stderr, "Stack underflow\n");
+        // fprintf(stderr, "Stack underflow\n");
         return;
     }
     memcpy(elemAddr, s->elems[s->top], s->elemSize);

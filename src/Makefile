@@ -1,12 +1,12 @@
 COMPILER = clang
 MESSAGE = "PROGRAM: \n"
 FILENAME = main
-LIB = stack
+LIB1 = stack
 BUILDDIR = build
 
 all:
-	@$(COMPILER) -c $(LIB).c -o $(BUILDDIR)/$(LIB).o
-	@$(COMPILER) $(FILENAME).c $(BUILDDIR)/$(LIB).o -o $(BUILDDIR)/$(FILENAME).out
+	@$(COMPILER) -c $(LIB1).c -o $(BUILDDIR)/$(LIB1).o
+	@$(COMPILER) $(FILENAME).c $(BUILDDIR)/$(LIB1).o -o $(BUILDDIR)/$(FILENAME).out
 	@echo $(MESSAGE)
 	@./$(BUILDDIR)/$(FILENAME).out
 	@echo "\n"

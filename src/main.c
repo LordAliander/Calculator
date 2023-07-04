@@ -1,5 +1,6 @@
 #include "main.h"
 #include "stack.h"
+#include "test.h"
 
 // -> have to add invalid input checks
 // -> have to patch some bugs
@@ -7,6 +8,7 @@
 // -> check for negative sqrt and 0 division 
 // -> cannot yet handle tan(tan(40)) or tan(3*2) or similar
 // -> have to add checks to senure valid input
+// -> inspect large driftoffs in results -> operators
 
 void getLine(char s[]) {
     int i;
@@ -135,12 +137,13 @@ void createArray(char s[], Array *arr) {
     arr[k].type = isEnd;
 }
 
-int checkValidityOfExpression(char s[]) {
-    // operator to operand balance 
-    // brackets balance
-    // check for division by zero
-    // undefined functions -> tan(90) or sqrt(n<0)
-}
+// int checkValidityOfExpression(char s[]) {
+//     // operator to operand balance 
+//     // brackets balance
+//     // check for division by zero
+//     // undefined functions -> tan(90) or sqrt(n<0)
+// }
+
 
 float performOperation(char op, float a, float b) {
     switch (op) {
@@ -264,6 +267,18 @@ int main() {
     Array reversePolish[MAXLEN];
     char s[MAXLEN];
     char s1[MAXLEN];
+    if (TESTPHASE) {
+        au = radians; 
+        for (int i = 0; i < 30; ++i) {
+            strcpy(s, testCases[i]);
+            createArray(s, infixNotation);
+            convertToPostfix(infixNotation, reversePolish);
+            float result = 0.;
+            result = evaluatePostfix(reversePolish);
+            printf("%2d | Expected Result: %10.4f | Result: %10.4f \n", i, results[i], result);
+        }
+        return 0;
+    }
     printf(UI);
     printf("* select angle unit (r/d): \n -> ");
     getLine(s1);
@@ -272,7 +287,6 @@ int main() {
         printf("\nInput expression: ");
         getLine(s);
         if (s[0] == 'q') return 0;
-        checkValidityOfExpression(s);
         createArray(s, infixNotation);
         convertToPostfix(infixNotation, reversePolish);
         float result = 0.;
