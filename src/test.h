@@ -3,10 +3,6 @@
 
 #include <string.h>
 
-#define true 1 
-#define false 2
-#define bool int
-
 const char *testCases[30] = {
         "(1+2)/8+98.4*4/4+sqrt(123)",
         "(2*2-1)/4+65.7*2*2+sqrt(45)",
@@ -73,6 +69,6 @@ double results[30] = {
     15898136.89052531
 };
 
-void testCode(void);
+void testCode(char s[], Array *, Array *);
 
 #endif

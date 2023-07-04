@@ -8,7 +8,11 @@
 #include <string.h>
 #include <math.h>
 
-#define TESTPHASE 1
+#define true 1
+#define false 0
+#define bool int
+
+#define TESTPHASE false
 
 #define MAXLEN 100
 #define PI 3.14159265358979323846264338327950288419716939937

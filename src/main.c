@@ -9,6 +9,7 @@
 // -> cannot yet handle tan(tan(40)) or tan(3*2) or similar
 // -> have to add checks to senure valid input
 // -> inspect large driftoffs in results -> operators
+// -> errors with different error codes 
 
 void getLine(char s[]) {
     int i;
@@ -18,16 +19,16 @@ void getLine(char s[]) {
     s[i] = '\0';
 }
 
-int isOperator(char c) {
+bool isOperator(char c) {
     switch (c) {
         case '+':
         case '/':
         case '-':
         case '*':
         case '^':
-            return 1;
+            return true;
         default:
-            return 0;
+            return false;
     }
 }
 
@@ -178,14 +179,14 @@ int getPrecedence(char op) {
     }
 }
 
-int hasGreaterPrecedence(char topOperator, char incomingOperator) {
+bool hasGreaterPrecedence(char topOperator, char incomingOperator) {
     int op1 = getPrecedence(topOperator);
     int op2 = getPrecedence(incomingOperator);
 
     if (op1 >= op2) {
-        return 1;  // True: operator1 has greater precedence
+        return true;  // operator1 has greater precedence
     } else {
-        return 0;  // False: operator1 does not have greater precedence
+        return false;  // operator1 does not have greater precedence
     }
 }
 
@@ -262,21 +263,25 @@ float evaluatePostfix(Array *reversePolish) {
     return resultFinal;
 }
 
+void testCode(char s[], Array *infixNotation, Array *reversePolish) {
+    au = radians; 
+    for (int i = 0; i < 30; ++i) {
+        strcpy(s, testCases[i]);
+        createArray(s, infixNotation);
+        convertToPostfix(infixNotation, reversePolish);
+        float result = 0.;
+        result = evaluatePostfix(reversePolish);
+        printf("%2d | Expected Result: %10.4f | Result: %10.4f \n", i, results[i], result);
+    }
+}
+
 int main() {
     Array infixNotation[MAXLEN];
     Array reversePolish[MAXLEN];
     char s[MAXLEN];
     char s1[MAXLEN];
     if (TESTPHASE) {
-        au = radians; 
-        for (int i = 0; i < 30; ++i) {
-            strcpy(s, testCases[i]);
-            createArray(s, infixNotation);
-            convertToPostfix(infixNotation, reversePolish);
-            float result = 0.;
-            result = evaluatePostfix(reversePolish);
-            printf("%2d | Expected Result: %10.4f | Result: %10.4f \n", i, results[i], result);
-        }
+        testCode(s, infixNotation, reversePolish);
         return 0;
     }
     printf(UI);
