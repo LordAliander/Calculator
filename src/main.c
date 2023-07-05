@@ -3,13 +3,12 @@
 #include "test.h"
 
 // -> have to add invalid input checks
-// -> have to patch some bugs
-// -> have to add Pi and e as viable input constants
 // -> check for negative sqrt and 0 division 
-// -> cannot yet handle tan(tan(40)) or tan(3*2) or similar
 // -> have to add checks to senure valid input
 // -> inspect large driftoffs in results -> operators
-// -> errors with different error codes 
+// -> errors with different error codes
+// -> big problem: dont compute the functions immediatly
+// ----> means put them in polymorphic array and update the algorithms to handle them
 
 void getLine(char s[]) {
     int i;
@@ -66,12 +65,12 @@ void createArray(char s[], Array *arr) {
         if (c == ' ' || c == '\t' || c == '\n') {
             continue;
         }
-        if (isdigit(c) || c == '.' || c == 'e' || c == 'E' ||
-            (i > 0 && c == '-' && (s[i - 1] == 'e' || s[i - 1] == 'E'))) {
+        if (isdigit(c) || c == '.' ||  c == 'E' ||
+            (i > 0 && c == '-' && (s[i - 1] == 'E'))) {
             // If character is part of a float, capture the entire number
             for (j = 0;
-                 isdigit(s[i]) || s[i] == '.' || s[i] == 'e' || s[i] == 'E' ||
-                 (s[i] == '-' && (s[i - 1] == 'e' || s[i - 1] == 'E'));
+                 isdigit(s[i]) || s[i] == '.' || s[i] == 'E' ||
+                 (s[i] == '-' && ( s[i - 1] == 'E'));
                  ++j, ++i) {
                 temp[j] = s[i];
             }
@@ -115,7 +114,7 @@ void createArray(char s[], Array *arr) {
                 for (; s[i] != '('; ++i)
                     ;
                 ++i;
-                for (x = 0; isdigit(s[i]) || s[i] == '.'; ++i, ++x) {
+                for (x = 0; isdigit(s[i]) || s[i] == '.' || s[i] == 'E'; ++i, ++x) {
                     temp[x] = s[i];
                 }
                 temp[x] = '\0';
@@ -123,6 +122,20 @@ void createArray(char s[], Array *arr) {
                     fprintf(stderr, "tan(90) is undefined\n");
                 arr[k].type = isFloat;
                 arr[k].val.fVal = evalFunc(f, (float)atof(temp));
+                k++;
+            } else if (c == 'p' || c == 'P' || c == 'e') { 
+                arr[k].type = isFloat;
+                switch (c) {
+                    case 'p':
+                    case 'P':
+                        arr[k].val.fVal = PI;
+                        break;
+                    case 'e':
+                        arr[k].val.fVal = e;
+                        break;
+                    default:
+                        break;
+                }
                 k++;
             } else if (c == '(') {
                 arr[k].type = isLeftPar;
